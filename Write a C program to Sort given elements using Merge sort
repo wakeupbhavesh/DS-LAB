@@ -1,0 +1,66 @@
+#include <stdio.h>
+void display(int arr[15], int n) {
+	for (int i=0;i<n;i++){
+		printf("%d ",arr[i]);
+	}
+	printf("\n");
+}
+void merge(int arr[15], int left, int mid, int right) {
+	int n1=mid-left+1;
+	int n2 =right - mid;
+	
+	int lefta[n1];
+	int righta[n2];
+	
+	for (int i = 0;i<n1;i++){
+		lefta[i] = arr[left + i];
+	}
+	for(int i=0;i<n2;i++){
+		righta[i]=arr[mid +1+i];
+	}
+	
+	
+	int i=0,j=0,k=left;
+	while(i<n1 && j<n2){
+		if(lefta[i]<=righta[j]){
+			arr[k]=lefta[i];
+			i++;
+		}else{
+			arr[k]=righta[j];
+			j++;
+		}
+		k++;
+	}
+	while(i<n1){
+		arr[k]=lefta[i];
+		i++;
+		k++;
+	}
+	while(j<n2){
+		arr[k]=righta[j];
+		j++;
+		k++;
+	}
+}
+void splitAndMerge(int arr[15], int left, int right) {
+	if(left<right){
+		int mid = left +(right - left)/2;
+		splitAndMerge(arr,left,mid);
+		splitAndMerge(arr,mid+1,right);
+		merge(arr,left,mid,right);
+	}
+}
+void main() {
+	int arr[15], i, n;
+	printf("Enter array size : ");
+	scanf("%d", &n);
+	printf("Enter %d elements : ", n);
+	for (i = 0; i < n; i++) {
+		scanf("%d", &arr[i]);
+	}
+	printf("Before sorting the elements are : ");
+	display(arr, n);
+	splitAndMerge(arr, 0, n - 1);
+	printf("After sorting the elements are : ");
+	display(arr, n);
+}
